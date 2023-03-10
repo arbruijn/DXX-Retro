@@ -1870,7 +1870,7 @@ void net_udp_welcome_player(UDP_sequence_packet *their)
 			int obsnum = Netgame.numobservers++;
 
 			UDP_sync_player = *their;
-			UDP_sync_player.player.connected = 1;
+			UDP_sync_player.player.connected = OBSERVER_PLAYER_ID;
 			Network_send_objects = 1;
 			Network_send_objnum = -1;
 			Netgame.observers[obsnum].LastPacketTime = timer_query();
@@ -2153,7 +2153,7 @@ void net_udp_send_objects(void)
 
 	Assert(Network_send_objects != 0);
 	Assert(player_num >= 0);
-	Assert(player_num < Netgame.max_numplayers);
+	Assert(UDP_sync_player.player.observer || player_num < Netgame.max_numplayers);
 
 	if (Endlevel_sequence || Control_center_destroyed)
 	{
